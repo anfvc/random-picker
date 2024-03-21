@@ -1,7 +1,6 @@
 import { useReducer, useState, useEffect } from "react";
 import ItemList from "./ItemList";
-
-// const initialState = [{ items: [], isPlaying: false }]; //{ id: 0, item: "" }
+import Modal from "./Modal";
 
 const gifsArray = [
   "https://media.giphy.com/media/pWO49XP9L7TxbgQVib/giphy.gif",
@@ -35,7 +34,6 @@ function reducer(state, action) {
     }
     case "PLAY": {
       return { ...state, isPlaying: !state.isPlaying };
-
     }
     case "PICK": {
       return {
@@ -47,40 +45,36 @@ function reducer(state, action) {
       return {
         isPlaying: false,
         itemsArray: [],
-        pickedItem: {},
+        pickedItem: gifsArray[0],
       };
     }
     case "PICK_GIF": {
       return { ...state, pickGif: handlePick(gifsArray) };
     }
   }
-
 }
-
-// const testArr = [];
-// state.itemsArray.forEach((item) => testArr.push(item.item));
-
-/* function randomItem(array) {
-} */
 
 function handlePick(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
+
 function RandomPicker() {
   const [input, setInput] = useState("");
   const [state, dispatch] = useReducer(reducer, initialState);
+
+
 
   useEffect(() => {
     if (state.isPlaying) {
       const interval = setInterval(() => {
         dispatch({ type: "PICK" });
         dispatch({ type: "PICK_GIF" });
-      }, 150);
+      }, 60);
 
       setTimeout(() => {
         clearInterval(interval);
         dispatch({ type: "PLAY" });
-      }, 4000);
+      }, 2000);
     }
   }, [state.isPlaying]);
 
@@ -92,23 +86,30 @@ function RandomPicker() {
 
   function handlePlay() {
     if (state.itemsArray.length < 2) {
+      <Modal />
       alert("You need to have 2 or more items, ok??");
     } else {
       dispatch({ type: "PLAY" });
     }
   }
 
-  function reset() {}
-
   function handleSubmit(e) {
     e.preventDefault();
+    const duplicate = state.itemsArray.find((obj) => obj.item === input);
 
-    if (input.length) {
+    if (duplicate) {
+
+      alert("This item already exists.");
+      setInput("")
+      return;
+    }
+    if (input) {
       dispatch({ type: "ADD", payload: input });
       setInput("");
     } else {
-      alert("Are you crazy?");
+      alert("You crazy?");
     }
+
   }
 
   //useEffect to send our items to localStorage
@@ -125,18 +126,24 @@ function RandomPicker() {
   // console.log(state.pickedItem.item)
 
   return (
-    <div className="conatiner">
+    <div className="container">
       <h2>
         {state.pickedItem.item
           ? state.pickedItem.item
           : "Add Items and Pick One"}
       </h2>
+
       <form onSubmit={handleSubmit}>
-        <input type="text" onChange={handleChange} value={input} placeholder="Add an item here!"/>
+        <input
+          type="text"
+          onChange={handleChange}
+          value={input}
+          placeholder="Add an item here!"
+        />
         <button type="submit">ADD</button>
       </form>
       <div className="btn-container">
-        <button onClick={handlePlay} className="add-btn">
+        <button onClick={handlePlay} className="add-btn" disabled={state.isPlaying}>
           PLAY
         </button>
         <button onClick={() => dispatch({ type: "RELOAD" })}>RESET</button>
@@ -160,14 +167,9 @@ function RandomPicker() {
 
       <div>
         {state.pickGif ? <img src={state.pickGif} alt="" /> : ""}
-        {/* {state.isPlaying ? <img src={state.gifsArray[0]} alt="" />  : ""} */}
       </div>
-      {/* <ItemList
-        state={state}
-        dispatch={dispatch}
-        input={input}
-        setInput={setInput}
-      /> */}
+      {/* {error.open && <Modal />} */}
+
     </div>
   );
 }
