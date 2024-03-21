@@ -159,7 +159,7 @@ function RandomPicker() {
       </ul>
 
       <div>
-        {state.isPlaying ? <img src={state.pickGif} alt="" /> : ""}
+        {state.pickGif ? <img src={state.pickGif} alt="" /> : ""}
         {/* {state.isPlaying ? <img src={state.gifsArray[0]} alt="" />  : ""} */}
       </div>
       {/* <ItemList
