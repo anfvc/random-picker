@@ -35,6 +35,7 @@ function reducer(state, action) {
     }
     case "PLAY": {
       return { ...state, isPlaying: !state.isPlaying };
+
     }
     case "PICK": {
       return {
@@ -53,7 +54,9 @@ function reducer(state, action) {
       return { ...state, pickGif: handlePick(gifsArray) };
     }
   }
+
 }
+
 // const testArr = [];
 // state.itemsArray.forEach((item) => testArr.push(item.item));
 
@@ -119,21 +122,24 @@ function RandomPicker() {
 
   useEffect(() => {}, []);
 
+  // console.log(state.pickedItem.item)
+
   return (
     <div className="conatiner">
       <h2>
-        {!state.isPlaying ? "Add Items and Pick One" :  state.pickedItem
+        {state.pickedItem.item
           ? state.pickedItem.item
-          : ""}
+          : "Add Items and Pick One"}
       </h2>
       <form onSubmit={handleSubmit}>
         <input type="text" onChange={handleChange} value={input} />
         <button type="submit">ADD</button>
       </form>
       <div className="btn-container">
-      <button onClick={handlePlay} className="add-btn">PLAY</button>
-      <button onClick={() => dispatch({ type: "RELOAD" })}>RESET</button>
-
+        <button onClick={handlePlay} className="add-btn">
+          PLAY
+        </button>
+        <button onClick={() => dispatch({ type: "RELOAD" })}>RESET</button>
       </div>
 
       <ul>
