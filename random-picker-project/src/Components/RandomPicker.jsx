@@ -132,7 +132,7 @@ function RandomPicker() {
           : "Add Items and Pick One"}
       </h2>
       <form onSubmit={handleSubmit}>
-        <input type="text" onChange={handleChange} value={input} />
+        <input type="text" onChange={handleChange} value={input} placeholder="Add an item here!"/>
         <button type="submit">ADD</button>
       </form>
       <div className="btn-container">
