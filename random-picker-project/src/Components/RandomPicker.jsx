@@ -45,7 +45,8 @@ function reducer(state, action) {
       return {
         isPlaying: false,
         itemsArray: [],
-        pickedItem: gifsArray[0],
+        pickedItem: {},
+        pickGif: gifsArray[0],
       };
     }
     case "PICK_GIF": {
@@ -59,10 +60,9 @@ function handlePick(array) {
 }
 
 function RandomPicker() {
+  const [error, setError] = useState({ content: "", open: false });
   const [input, setInput] = useState("");
   const [state, dispatch] = useReducer(reducer, initialState);
-
-
 
   useEffect(() => {
     if (state.isPlaying) {
@@ -86,8 +86,11 @@ function RandomPicker() {
 
   function handlePlay() {
     if (state.itemsArray.length < 2) {
-      <Modal />
-      alert("You need to have 2 or more items, ok??");
+      setError({
+        open: true,
+        content: "You need to have 2 or more items, ok?",
+      });
+      // alert("You need to have 2 or more items, ok??");
     } else {
       dispatch({ type: "PLAY" });
     }
@@ -98,18 +101,16 @@ function RandomPicker() {
     const duplicate = state.itemsArray.find((obj) => obj.item === input);
 
     if (duplicate) {
-
-      alert("This item already exists.");
-      setInput("")
-      return;
+      setError({ open: true, content: "This item already exists." });
+      setInput("");
     }
     if (input) {
       dispatch({ type: "ADD", payload: input });
       setInput("");
     } else {
-      alert("You crazy?");
+      setError({ open: true, content: "You crazy?" });
     }
-
+    setInput("");
   }
 
   //useEffect to send our items to localStorage
@@ -143,7 +144,11 @@ function RandomPicker() {
         <button type="submit">ADD</button>
       </form>
       <div className="btn-container">
-        <button onClick={handlePlay} className="add-btn" disabled={state.isPlaying}>
+        <button
+          onClick={handlePlay}
+          className="add-btn"
+          disabled={state.isPlaying}
+        >
           PLAY
         </button>
         <button onClick={() => dispatch({ type: "RELOAD" })}>RESET</button>
@@ -165,11 +170,8 @@ function RandomPicker() {
         })}
       </ul>
 
-      <div>
-        {state.pickGif ? <img src={state.pickGif} alt="" /> : ""}
-      </div>
-      {/* {error.open && <Modal />} */}
-
+      <div>{state.pickGif ? <img src={state.pickGif} alt="" /> : ""}</div>
+      {error.open && <Modal error={error} setError={setError} />}
     </div>
   );
 }

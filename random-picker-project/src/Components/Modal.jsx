@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Popup from "reactjs-popup";
 
-function Modal() {
+function Modal({error, setError}) {
 
-  const [error, setError] = useState({ content: "", open: false });
+  // const [error, setError] = useState({ content: "", open: false });
   const closeModal = () =>  setError({open: false, content: ""})
 
 
