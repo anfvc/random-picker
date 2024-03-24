@@ -1,20 +1,16 @@
-function ItemList({ dispatch, input, setInput, state }) {
-  const { itemsArray } = state;
+import { useContext } from "react";
+import { RandomContext } from "../Contexts/RandomContext";
+import Item from "./Item";
+
+function ItemList() {
+  const { state, dispatch } = useContext(RandomContext);
 
   return (
-    <ul>
-      {itemsArray.map((obj) => {
-        return (
-          <div key={obj.id}>
-            <li>{obj.item}</li>
-
-            <button onClick={() => dispatch({ type: "DELETE", payload: obj.id })}>
-              X
-            </button>
-          </div>
-        );
-      })}
-    </ul>
+    <div>
+      {state.itemsArray.map((obj) => (
+        <Item key={obj.id} obj={obj} />
+      ))}
+    </div>
   );
 }
 

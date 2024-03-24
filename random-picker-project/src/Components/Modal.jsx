@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Popup from "reactjs-popup";
+import { RandomContext } from "../Contexts/RandomContext";
 
-function Modal({error, setError}) {
+function Modal() {
 
-  // const [error, setError] = useState({ content: "", open: false });
+  const {error, setError} = useContext(RandomContext)
   const closeModal = () =>  setError({open: false, content: ""})
 
 
