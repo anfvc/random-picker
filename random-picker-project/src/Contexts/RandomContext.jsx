@@ -84,14 +84,14 @@ function RandomContextProvider({ children }) {
     e.preventDefault();
     const duplicate = state.itemsArray.find((obj) => obj.item === input);
 
-    if (duplicate) {
-      //if items exists, alert!
+    if (duplicate) { //if item duplicated, alert!
       setError({ open: true, content: "This item already exists." });
-    } else if (!input) {
+    } else if (!input) { //if input empty, alert!
       setError({ open: true, content: "You need to type something." });
     } else {
       dispatch({ type: "ADD", payload: input });
     }
+    setInput("");
   }
 
   return (
