@@ -51,7 +51,7 @@ function RandomPicker() {
       <ItemList />
 
       <div>{state.pickGif ? <img src={state.pickGif} alt="" /> : ""}</div>
-      {error.open && <Modal />}
+      {state.error && <Modal />}
     </div>
   );
 }

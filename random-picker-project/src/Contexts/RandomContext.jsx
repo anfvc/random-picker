@@ -15,6 +15,8 @@ const initialState = {
   itemsArray: JSON.parse(localStorage.getItem("items")) || [],
   pickedItem: {},
   pickGif: gifsArray[0],
+  error: { content: "", open: false },
+  input: "",
 };
 
 function reducer(state, action) {
@@ -26,6 +28,7 @@ function reducer(state, action) {
           ...state.itemsArray,
           { item: action.payload, id: Date.now() },
         ],
+        input: "",
       };
     }
     case "DELETE": {
@@ -53,6 +56,15 @@ function reducer(state, action) {
     case "PICK_GIF": {
       return { ...state, pickGif: handlePick(gifsArray) };
     }
+    case "CHANGE": {
+      return { ...state, input: action.payload };
+    }
+    case "ERROR": {
+      return {
+        ...state,
+        error: action.payload,
+      };
+    }
   }
 }
 
@@ -61,19 +73,22 @@ function handlePick(array) {
 }
 
 function RandomContextProvider({ children }) {
-  const [error, setError] = useState({ content: "", open: false });
-  const [input, setInput] = useState("");
+  // const [error, setError] = useState({ content: "", open: false });
+  // const [input, setInput] = useState("");
   const [state, dispatch] = useReducer(reducer, initialState);
 
   function handleChange(e) {
-    setInput(e.target.value);
+    dispatch({ type: "CHANGE", payload: e.target.value });
   }
 
   function handlePlay() {
     if (state.itemsArray.length < 2) {
-      setError({
-        open: true,
-        content: "You need to have 2 or more items, ok?",
+      dispatch({
+        type: "ERROR",
+        payload: {
+          open: true,
+          content: "You need to have 2 or more items, ok?",
+        },
       });
     } else {
       dispatch({ type: "PLAY" });
@@ -82,29 +97,34 @@ function RandomContextProvider({ children }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const duplicate = state.itemsArray.find((obj) => obj.item === input);
+    const duplicate = state.itemsArray.find((obj) => obj.item === state.input);
 
-    if (duplicate) { //if item duplicated, alert!
-      setError({ open: true, content: "This item already exists." });
-    } else if (!input) { //if input empty, alert!
-      setError({ open: true, content: "You need to type something." });
+    if (duplicate) {
+      //if item duplicated, alert!
+      dispatch({
+        type: "ERROR",
+        payload: { open: true, content: "This item already exists." },
+      });
+    } else if (!state.input) {
+      //if input empty, alert!
+      dispatch({
+        type: "ERROR",
+        payload: { open: true, content: "You need to type something." },
+      });
     } else {
-      dispatch({ type: "ADD", payload: input });
+      dispatch({ type: "ADD", payload: state.input });
     }
-    setInput("");
+    dispatch({ type: "CHANGE", payload: "" });
   }
 
   return (
     <RandomContext.Provider
       value={{
-        setError,
-        error,
         state,
         handleSubmit,
         handleChange,
         handlePlay,
         dispatch,
-        setError,
       }}
     >
       {children}
