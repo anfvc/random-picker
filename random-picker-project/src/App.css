@@ -44,35 +44,52 @@ form input:focus {
   outline: 2px solid rgb(66, 175, 33)
 }
 
+form button {
+  background-color: blue;
+  border-radius: .8rem;
+  padding: .6rem;
+}
+
+
+.items-container {
+  display: flex;
+  gap: 1rem;
+}
+
 .btn-container {
-  margin-top: 2rem;
   display: flex;
+  flex-direction: row;
   justify-content: center;
+  align-items: center;
   gap: 1rem;
+  color: black;
+  margin: 3rem 0;
 }
 
-ul {
-  margin: 2rem;
-  padding-left: 0;
+.btn-container button {
+  background-color: blue;
+  border-radius: .8rem;
+  padding: .6rem;
+}
+
+.delete-button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.item-container {
+  height: 1rem;
+  border: 1px solid black;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  flex-wrap: wrap;
+  padding: .8rem;
+  background-color: white;
+  color: black;
 }
 
-ul div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-
-li {
-  list-style: none;
-  color: rgb(255, 255, 255);
-  font-size: 1.5rem;
-}
 
 img {
   margin-top: 2rem;
@@ -80,7 +97,21 @@ img {
   box-shadow: 5px 5px 15px rgba(31, 31, 32, 0.37);
 }
 
-button {
-  background-color: darkblue;
-  padding: .5rem;
+.modal {
+  background-color: white;
+  color: black;
+  padding: 3rem;
 }
+
+.modal div {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal button {
+  background-color: blue;
+  padding: .3rem;
+}
+

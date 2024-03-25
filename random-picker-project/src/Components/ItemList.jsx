@@ -3,10 +3,10 @@ import { RandomContext } from "../Contexts/RandomContext";
 import Item from "./Item";
 
 function ItemList() {
-  const { state, dispatch } = useContext(RandomContext);
+  const { state } = useContext(RandomContext);
 
   return (
-    <div>
+    <div className="items-container">
       {state.itemsArray.map((obj) => (
         <Item key={obj.id} obj={obj} />
       ))}

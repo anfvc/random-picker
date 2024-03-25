@@ -5,7 +5,7 @@ import { RandomContext } from "../Contexts/RandomContext";
 import Form from "./Form";
 
 function RandomPicker() {
-  const { error, state, handlePlay, dispatch } = useContext(RandomContext);
+  const { state, handlePlay, dispatch } = useContext(RandomContext);
 
   useEffect(() => {
     if (state.isPlaying) {

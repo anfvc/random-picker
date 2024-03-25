@@ -10,10 +10,12 @@ function Modal() {
   return (
     <Popup open={state.error.open} closeOnDocumentClick onClose={closeModal}>
       <div className="modal">
-        {state.error.content}
-        <button className="close" onClick={closeModal}>
-          X
-        </button>
+        <div>
+          {state.error.content}
+          <button className="close" onClick={closeModal}>
+            ❌
+          </button>
+        </div>
       </div>
     </Popup>
   );
